@@ -686,9 +686,9 @@ return {
                 name="证书",
                 text={
                     "回合开始时",
-                    "随机添加一张",
-                    "带随机{C:attention}蜡封{}的{C:attention}增强卡牌",
-                    "到手牌中",
+                    "添加一张带有随机",
+                    "{C:attention}蜡封{}和{C:attention}增强效果{}",
+                    "的牌到手牌中",
                 },
                 unlock={
                     "拥有一张",
@@ -708,8 +708,6 @@ return {
                 text={
                     "所有{C:attention}Boss盲注",
                     "限制条件消失",
-                    "过关需求分数",
-                    "的增速{C:attention}不再{}加快",
                 },
                 unlock={
                     "{E:1,s:1.3}?????",
@@ -1188,8 +1186,8 @@ return {
                 name="大理石小丑",
                 text={
                     "在选择{C:attention}盲注{}后",
-                    "牌组中会添加",
-                    "一张{C:attention}石头{}牌",
+                    "牌组中会添加一张带有",
+                    "随机版本的{C:attention}石头牌{}",
                 },
             },
             j_matador={
@@ -2478,8 +2476,8 @@ return {
             c_immolate={
                 name="火祭",
                 text={
-                    "摧毁指定的至多",
-                    "{C:attention}#1#{}张手牌",
+                    "摧毁至多{C:attention}#1#{}张",
+                    "指定的手牌",
                     "获得{C:money}$#2#",
                 },
             },
