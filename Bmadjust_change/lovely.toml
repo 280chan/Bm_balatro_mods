@@ -1,0 +1,669 @@
+[manifest]
+version = "1.0.8t"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if v ~= eligible_card and (not v.ability.eternal) then v:start_dissolve(nil, _first_dissolve);_first_dissolve = true end'''
+position = "before"
+payload = '''
+--[[ 
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if v ~= eligible_card and (not v.ability.eternal) then v:start_dissolve(nil, _first_dissolve);_first_dissolve = true end'''
+position = "after"
+payload = '''
+]]
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.ecto_minus = G.GAME.ecto_minus + 1'''
+position = "at"
+payload = '''
+                    G.GAME.ecto_minus = G.GAME.ecto_minus + 0
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end'''
+position = "before"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if not v.ability.eternal then deletable_jokers[#deletable_jokers + 1] = v end'''
+position = "after"
+payload = '''
+]]
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if #G.jokers.cards <= G.jokers.config.card_limit then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if card.ability.invis_rounds then card.ability.invis_rounds = 0 end'''
+position = "before"
+payload = '''
+]]
+                        card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                        local chosen_joker = G.jokers.cards[#G.jokers.cards]
+                        for k, v in ipairs(SMODS.Sticker.obj_buffer) do
+                            if chosen_joker.ability[v] then
+                                chosen_joker.ability[v] = nil
+                            end
+                        end
+                        local card = copy_card(chosen_joker)
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if card.edition and card.edition.negative then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Wraith' then'''
+position = "before"
+payload = '''
+]]
+            end
+            if chosen_joker.edition and chosen_joker.edition.negative then card:set_edition({negative = true}, true) end
+            G.jokers:emplace(card)
+            return true end }))
+    end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''for i = 1, self.ability.extra.destroy do destroyed_cards[#destroyed_cards+1] = temp_hand[i] end'''
+position = "before"
+payload = '''
+]]
+            for i = #G.hand.highlighted, 1, -1 do
+                temp_hand[#temp_hand + 1] = G.hand.highlighted[i]
+            end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''local temp_hand = {}'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Castle' and (self.ability.extra.chips > 0) then'''
+position = "before"
+payload = '''
+]]
+                        end
+                        if self.ability.name == 'Flower Pot' then
+                            local suits = {
+                                ['Hearts'] = 0,
+                                ['Diamonds'] = 0,
+                                ['Spades'] = 0,
+                                ['Clubs'] = 0
+                            }
+                            for i = 1, #context.scoring_hand do
+                                if context.scoring_hand[i]:is_suit('Hearts', true) and suits["Hearts"] == 0 then suits["Hearts"] = suits["Hearts"] + 1 end
+                                if context.scoring_hand[i]:is_suit('Diamonds', true) and suits["Diamonds"] == 0 then suits["Diamonds"] = suits["Diamonds"] + 1 end
+                                if context.scoring_hand[i]:is_suit('Spades', true) and suits["Spades"] == 0 then suits["Spades"] = suits["Spades"] + 1 end
+                                if context.scoring_hand[i]:is_suit('Clubs', true) and suits["Clubs"] == 0 then suits["Clubs"] = suits["Clubs"] + 1 end
+                            end
+                            if suits["Hearts"] > 0 and
+                            suits["Diamonds"] > 0 and
+                            suits["Spades"] > 0 and
+                            suits["Clubs"] > 0 then
+                                return {
+                                    message = localize{type='variable',key='a_xmult',vars={self.ability.extra}},
+                                    Xmult_mod = self.ability.extra
+                                }
+                            end
+                        end
+                        if self.ability.name == 'Seeing Double' then
+                            local suits = {
+                                ['Hearts'] = 0,
+                                ['Diamonds'] = 0,
+                                ['Spades'] = 0,
+                                ['Clubs'] = 0
+                            }
+                            for i = 1, #context.scoring_hand do
+                                if context.scoring_hand[i]:is_suit('Hearts', true) and suits["Hearts"] == 0 then suits["Hearts"] = suits["Hearts"] + 1 end
+                                if context.scoring_hand[i]:is_suit('Diamonds', true) and suits["Diamonds"] == 0 then suits["Diamonds"] = suits["Diamonds"] + 1 end
+                                if context.scoring_hand[i]:is_suit('Spades', true) and suits["Spades"] == 0 then suits["Spades"] = suits["Spades"] + 1 end
+                                if context.scoring_hand[i]:is_suit('Clubs', true) and suits["Clubs"] == 0 then suits["Clubs"] = suits["Clubs"] + 1 end
+                            end
+                            if (suits["Hearts"] > 0 or
+                            suits["Diamonds"] > 0 or
+                            suits["Spades"] > 0) and
+                            suits["Clubs"] > 0 then
+                                return {
+                                    message = localize{type='variable',key='a_xmult',vars={self.ability.extra}},
+                                    Xmult_mod = self.ability.extra
+                                }
+                            end
+                        end
+                        if self.ability.name == 'Wee Joker' then
+                            return {
+                                message = localize{type='variable',key='a_chips',vars={self.ability.extra.chips}},
+                                chip_mod = self.ability.extra.chips, 
+                                colour = G.C.CHIPS
+                            }
+                        end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Seance' and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''j_throwback=        {order = 114,  unlocked = false, discovered = false, blueprint_compat = true, perishable_compat = true, eternal_compat = true, rarity = 2, cost = 6, name = "Throwback", pos = {x=5,y=7}, set = "Joker", effect = "", config = {extra = 0.25}, unlock_condition = {type = 'continue_game'}},'''
+position = "at"
+payload = '''
+        j_throwback=        {order = 114,  unlocked = false, discovered = false, blueprint_compat = true, perishable_compat = true, eternal_compat = true, rarity = 2, cost = 6, name = "Throwback", pos = {x=5,y=7}, set = "Joker", effect = "", config = {extra = 0.25, odd = 4}, unlock_condition = {type = 'continue_game'}},        
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Throwback' then loc_vars = {self.ability.extra, self.ability.x_mult}'''
+position = "at"
+payload = '''
+        elseif self.ability.name == 'Throwback' then loc_vars = {self.ability.extra, self.ability.x_mult, ''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.odd}
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Throwback' and not context.blueprint then'''
+position = "after"
+payload = '''
+    if pseudorandom('throwback') < G.GAME.probabilities.normal/self.ability.odd then
+        G.E_MANAGER:add_event(Event({func = function()
+        ease_ante(-1)
+        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
+        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante - 1
+            card_eval_status_text(self, 'extra', nil, nil, nil, {message = '回溯', colour = G.C.GREEN})
+        return true end}))
+    end
+'''
+match_indent = true
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if #context.full_hand == 1 then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Ride the Bus' and not context.blueprint then'''
+position = "before"
+payload = '''
+]]
+                            G.E_MANAGER:add_event(Event({trigger = 'before', delay = 0.0, func = (function()
+                                local _card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, 'c_cryptid', 'dna')
+                                _card:set_edition({negative = true}, true)
+                                _card:add_to_deck()
+                                G.consumeables:emplace(_card)
+                            return true end)}))
+                            card_eval_status_text(context.blueprint_card or self, 'extra', nil, nil, nil, {message = localize('k_copied_ex'), colour = G.C.CHIPS})
+                        end
+                    end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Satellite' then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Shoot the Moon' then loc_vars = {self.ability.extra}'''
+position = "before"
+payload = '''
+]]
+            loc_vars = {self.ability.extra.increase, self.ability.extra.dollars}
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Satellite' then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Delayed Gratification' and G.GAME.current_round.discards_used == 0 and G.GAME.current_round.discards_left > 0 then'''
+position = "before"
+payload = '''
+]]
+            return self.ability.extra.dollars
+        end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''j_seance=           {order = 66,  unlocked = true, discovered = false, blueprint_compat = true, perishable_compat = true, eternal_compat = true, rarity = 2, cost = 6, name = "Seance", pos = {x=0,y=12}, set = "Joker", cost_mult = 1.0, config = {extra = {poker_hand = 'Straight Flush'}}},'''
+position = "at"
+payload = '''
+        j_seance=           {order = 66,  unlocked = true, discovered = false, blueprint_compat = true, perishable_compat = true, eternal_compat = true, rarity = 2, cost = 6, name = "Seance", pos = {x=0,y=12}, set = "Joker", cost_mult = 1.0, config = {extra = 4}},
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Seance' then loc_vars = {localize(self.ability.extra.poker_hand, 'poker_hands')}'''
+position = "at"
+payload = '''
+        elseif self.ability.name == 'Seance' then loc_vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), self.ability.extra}
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''level_up_hand(self, k, true)'''
+position = "at"
+payload = '''
+            level_up_hand(self, k, true, v.level)
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level='+1'})'''
+position = "at"
+payload = '''
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level='X2'})
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Hit the Road' and self.ability.x_mult > 1 then'''
+position = "at"
+payload = '''
+                if self.ability.name == 'Hit the Road' and self.ability.x_mult < 1 then
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''elseif self.name == 'Amber Acorn' and not reset and #G.jokers.cards > 0 then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''--add new debuffs'''
+position = "before"
+payload = '''
+]]
+    end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''local cards_destroyed = {}'''
+position = "before"
+payload = '''
+        local aa_modded = false
+        mult, hand_chips, aa_modded = G.GAME.blind:modify_hand_final(mult, hand_chips)
+        mult, hand_chips = mod_mult(mult), mod_chips(hand_chips)
+        if aa_modded then update_hand_text({sound = 'generic1', modded = aa_modded}, {chips = hand_chips, mult = mult}) end
+
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.blind:debuff_card(_card)'''
+position = "before"
+payload = '''
+                        _card:set_ability(pseudorandom_element(G.P_CENTER_POOLS['Enhanced'], pseudoseed('certsl')))
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''and #G.hand.cards > 1 then'''
+position = "after"
+payload = '''
+if (self.ability.name == 'Familiar' or self.ability.name == 'Grim' or self.ability.name == 'Incantation') and (#G.hand.highlighted > self.ability.extra or #G.hand.highlighted < 1) then
+    return false
+end
+'''
+match_indent = true
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Troubadour' then loc_vars = {self.ability.extra.h_size, -self.ability.extra.h_plays}'''
+position = "at"
+payload = '''
+elseif self.ability.name == 'Troubadour' then loc_vars = {self.ability.extra.h_size}
+'''
+match_indent = true
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Troubadour' then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.round_resets.hands = G.GAME.round_resets.hands + self.ability.extra.h_plays'''
+position = "after"
+payload = '''
+]]
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''G.GAME.round_resets.hands = G.GAME.round_resets.hands - self.ability.extra.h_plays'''
+position = "after"
+payload = '''
+]]
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif context.reroll_shop then'''
+position = "after"
+payload = '''
+            if self.ability.name == 'Seance' and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                if pseudorandom('seance') < G.GAME.probabilities.normal/self.ability.extra then
+                    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'before',
+                        delay = 0.0,
+                        func = (function()
+                                local card = create_card('Spectral', G.consumeables, nil, nil, nil, nil, nil, 'sea')
+                                card:add_to_deck()
+                                G.consumeables:emplace(card)
+                                G.GAME.consumeable_buffer = 0
+                            return true
+                        end)}))
+                    return {
+                        message = localize('k_plus_spectral'),
+                        colour = G.C.SECONDARY_SET.Spectral,
+                        card = self
+                    }
+                end
+            end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Showman' then'''
+position = "after"
+payload = '''
+            local has_message = (G.GAME and self.area and (self.area == G.jokers))
+            if has_message then
+                local ring_key = self.ability.extra
+                main_end = {
+                    {n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+                        {n=G.UIT.C, config={ref_table = self, align = "m", colour = ring_key and G.C.RED or G.C.GREEN, r = 0.05, padding = 0.06}, nodes={
+                            {n=G.UIT.T, config={text = ' '..localize(ring_key and 'k_locked' or 'k_effective')..' ',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.9}},
+                        }}
+                    }}
+                }
+            end
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.d_size > 0 then'''
+position = "at"
+payload = '''
+        if self.ability.d_size > 0 and self.ability.name ~= 'Merry Andy' then
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.ability.name == 'Hiker' then loc_vars = {self.ability.extra}'''
+position = "at"
+payload = '''
+        elseif self.ability.name == 'Hiker' then loc_vars = {self.ability.extra.chips, self.ability.extra.chip_mod}
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.name == 'Hiker' then'''
+position = "at"
+payload = '''
+                if self.ability.name == 'Hiker' and self.ability.name ~= 'Hiker' then
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.name == 'Midas Mask' then info_queue[#info_queue+1] = G.P_CENTERS.m_gold'''
+position = "before"
+payload = '''
+        elseif _c.name == 'DNA' then info_queue[#info_queue+1] = G.P_CENTERS.c_cryptid; info_queue[#info_queue+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''elseif self.name == 'The Needle' then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''elseif self.name == 'The Wall' then'''
+position = "before"
+payload = '''
+]]
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''elseif self.name == 'The Needle' and not reset then'''
+position = "after"
+payload = '''
+--[[
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''elseif self.name == 'The Manacle' and not reset then'''
+position = "before"
+payload = '''
+]]
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''elseif self.name == 'The Fish' then'''
+position = "before"
+payload = '''
+    elseif self.name == 'The Needle' then
+        self.prepped = true
+'''
+match_indent = false
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.GAME.chips - G.GAME.blind.chips >= 0 or G.GAME.current_round.hands_left < 1 then'''
+position = "at"
+payload = '''
+if G.GAME.chips - G.GAME.blind.chips >= 0 or G.GAME.current_round.hands_left < 1 or (G.GAME.blind.name and G.GAME.blind.name == 'The Needle' and G.GAME.blind.prepped) then
+'''
+match_indent = true
+overwrite = false
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''elseif _c.name == "Strength" then loc_vars = {cfg.max_highlighted}'''
+position = "at"
+payload = '''
+elseif _c.name == "Strength" then loc_vars = {cfg.max_highlighted, cfg.consumeable and cfg.consumeable.rank_conv or 1}
+'''
+match_indent = true
+overwrite = false
